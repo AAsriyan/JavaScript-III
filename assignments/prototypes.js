@@ -67,6 +67,38 @@ Humanoid.prototype = Object.create(CharacterStats.prototype);
 Humanoid.prototype.greet = function() {
   return `${this.name} offers a greeting in ${this.language}`
 }
+
+// Villain will inherit from Humanoid
+
+function Villain(villainAttributes) {
+  Humanoid.call(this, villainAttributes);
+  this.spell = villainAttributes.spell;
+}
+
+Villain.prototype = Object.create(Humanoid.prototype);
+
+Villain.prototype.attackHero = function(object) {
+  console.log(object.name + " has taken 5 damage from " + this.spell + ". " + object.name + " has " + (object.healthPoints -= 5) + " healthpoints left!");
+  if (object.healthPoints <= 0) {
+    return `${object.name} Says: I'm dying, someone pls REZ MEEEEEE`;
+  }
+}
+
+// Hero will inherit from Humanoid
+
+function Hero(heroAttributes) {
+  Humanoid.call(this, heroAttributes);
+  this.spell = heroAttributes.spell;
+}
+
+Hero.prototype = Object.create(Humanoid.prototype);
+
+Hero.prototype.attackVillain = function(object) {
+  console.log(object.name + " has taken 5 damage from " + this.spell + ". " + object.name + " has " + (object.healthPoints -= 5) + " healthpoints left!");
+  if (object.healthPoints <= 0) {
+    return `${object.name} Says: My minons will take vengenace!!!!`;
+  }
+}
  
 /*
   * Inheritance chain: GameObject -> CharacterStats -> Humanoid
@@ -126,6 +158,44 @@ Humanoid.prototype.greet = function() {
     ],
     language: 'Elvish',
   });
+
+  const villainEvilGuy = new Villain({
+    createdAt: new Date(),
+    dimensions: {
+      length: 2,
+      width: 2,
+      height: 2,
+    },
+    healthPoints: 15,
+    name: 'Evil Guy',
+    team: 'Villain Bad Guy Guild',
+    weapons: [
+      'Necromancer Staff',
+      'Reflector Shield',
+    ],
+    language: 'Common Tongue',
+    spell: 'Life Drain'
+  })
+
+  const heroGoodGuy = new Hero({
+    createdAt: new Date(),
+    dimensions: {
+      length: 2,
+      width: 2,
+      height: 2,
+    },
+    healthPoints: 15,
+    name: 'Good Guy',
+    team: 'Hero Good Guy Guild',
+    weapons: [
+      'Sword of Light',
+      'Diamond Shield',
+    ],
+    language: 'Common Tongue',
+    spell: 'Sword Blessing'
+  })
+
+
 
   // console.log(mage.createdAt); // Today's date
   // console.log(archer.dimensions); // { length: 1, width: 2, height: 4 }

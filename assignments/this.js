@@ -12,51 +12,51 @@
 // Principle 1
 
 // code example for Window Binding
-const person = {
-    name: 'Billy',
-    age: '15',
-    speak: function() {
-        // age cannot be found because this was omitted from ${age} so it is binding to the window.
-        return `Hello, I am ${age} years old!`;
-    }
-}
+// const person = {
+//     name: 'Billy',
+//     age: '15',
+//     speak: function() {
+//         // age cannot be found because this was omitted from ${age} so it is binding to the window.
+//         return `Hello, I am ${age} years old!`;
+//     }
+// }
 
-// Principle 2
+// // Principle 2
 
-// code example for Implicit Binding
+// // code example for Implicit Binding
 
-const person = {
-    name: 'Billy',
-    age: '15',
-    speak: function() {
-        return `Hello, I am ${this.age} years old!`;
-    }
-}
+// const person = {
+//     name: 'Billy',
+//     age: '15',
+//     speak: function() {
+//         return `Hello, I am ${this.age} years old!`;
+//     }
+// }
 
-person.speak();
+// person.speak();
 
-// Principle 3
+// // Principle 3
 
-// code example for New Binding
+// // code example for New Binding
 
-function GenericPerson(name) {
-    this.name = name;
-    this.age = 23;
-}
+// function GenericPerson(name) {
+//     this.name = name;
+//     this.age = 23;
+// }
 
-const billy = new GenericPerson('Billy');
+// const billy = new GenericPerson('Billy');
 
-// Principle 4
+// // Principle 4
 
-// code example for Explicit Binding
+// // code example for Explicit Binding
 
-const person = {
-    name: 'Billy',
-    age: '15',
-}
+// const person = {
+//     name: 'Billy',
+//     age: '15',
+// }
 
-function speak() {
-    return `Hello, I am ${this.age} years old!`;
-}
+// function speak() {
+//     return `Hello, I am ${this.age} years old!`;
+// }
 
-speak.bind(person);
+// speak.bind(person);
