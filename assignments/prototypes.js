@@ -15,6 +15,15 @@
   * destroy() // prototype method -> returns the string: 'Object was removed from the game.'
 */
 
+function GameObject(attributes) {
+  this.createdAt = attributes.createdAt;
+  this.dimensions = attributes.dimensions;
+}
+
+GameObject.prototype.destroy = function() {
+  return `${this.name} was removed from the game.`
+}
+
 /*
   === CharacterStats ===
   * healthPoints
@@ -22,6 +31,18 @@
   * takeDamage() // prototype method -> returns the string '<object name> took damage.'
   * should inherit destroy() from GameObject's prototype
 */
+
+function CharacterStats(charAttributes) {
+  GameObject.call(this, charAttributes);
+  this.healthPoints = charAttributes.healthPoints;
+  this.name = charAttributes.name;
+}
+
+CharacterStats.prototype = Object.create(GameObject.prototype);
+
+CharacterStats.prototype.takeDamage = function() {
+  return `${this.name} took damage.`
+}
 
 /*
   === Humanoid (Having an appearance or character resembling that of a human.) ===
@@ -32,6 +53,52 @@
   * should inherit destroy() from GameObject through CharacterStats
   * should inherit takeDamage() from CharacterStats
 */
+
+function Humanoid(humanAttributes) {
+  CharacterStats.call(this, humanAttributes);
+  this.team = humanAttributes.team;
+  this.weapons = humanAttributes.weapons;
+  this.language = humanAttributes.language;
+
+}
+
+Humanoid.prototype = Object.create(CharacterStats.prototype);
+
+Humanoid.prototype.greet = function() {
+  return `${this.name} offers a greeting in ${this.language}`
+}
+
+// Villain will inherit from Humanoid
+
+function Villain(villainAttributes) {
+  Humanoid.call(this, villainAttributes);
+  this.spell = villainAttributes.spell;
+}
+
+Villain.prototype = Object.create(Humanoid.prototype);
+
+Villain.prototype.attackHero = function(object) {
+  console.log(object.name + " has taken 5 damage from " + this.spell + ". " + object.name + " has " + (object.healthPoints -= 5) + " healthpoints left!");
+  if (object.healthPoints <= 0) {
+    return `${object.name} Says: I'm dying, someone pls REZ MEEEEEE`;
+  }
+}
+
+// Hero will inherit from Humanoid
+
+function Hero(heroAttributes) {
+  Humanoid.call(this, heroAttributes);
+  this.spell = heroAttributes.spell;
+}
+
+Hero.prototype = Object.create(Humanoid.prototype);
+
+Hero.prototype.attackVillain = function(object) {
+  console.log(object.name + " has taken 5 damage from " + this.spell + ". " + object.name + " has " + (object.healthPoints -= 5) + " healthpoints left!");
+  if (object.healthPoints <= 0) {
+    return `${object.name} Says: My minons will take vengenace!!!!`;
+  }
+}
  
 /*
   * Inheritance chain: GameObject -> CharacterStats -> Humanoid
@@ -41,7 +108,7 @@
 
 // Test you work by un-commenting these 3 objects and the list of console logs below:
 
-/*
+
   const mage = new Humanoid({
     createdAt: new Date(),
     dimensions: {
@@ -92,17 +159,54 @@
     language: 'Elvish',
   });
 
-  console.log(mage.createdAt); // Today's date
-  console.log(archer.dimensions); // { length: 1, width: 2, height: 4 }
-  console.log(swordsman.healthPoints); // 15
-  console.log(mage.name); // Bruce
-  console.log(swordsman.team); // The Round Table
-  console.log(mage.weapons); // Staff of Shamalama
-  console.log(archer.language); // Elvish
-  console.log(archer.greet()); // Lilith offers a greeting in Elvish.
-  console.log(mage.takeDamage()); // Bruce took damage.
-  console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
-*/
+  const villainEvilGuy = new Villain({
+    createdAt: new Date(),
+    dimensions: {
+      length: 2,
+      width: 2,
+      height: 2,
+    },
+    healthPoints: 15,
+    name: 'Evil Guy',
+    team: 'Villain Bad Guy Guild',
+    weapons: [
+      'Necromancer Staff',
+      'Reflector Shield',
+    ],
+    language: 'Common Tongue',
+    spell: 'Life Drain'
+  })
+
+  const heroGoodGuy = new Hero({
+    createdAt: new Date(),
+    dimensions: {
+      length: 2,
+      width: 2,
+      height: 2,
+    },
+    healthPoints: 15,
+    name: 'Good Guy',
+    team: 'Hero Good Guy Guild',
+    weapons: [
+      'Sword of Light',
+      'Diamond Shield',
+    ],
+    language: 'Common Tongue',
+    spell: 'Sword Blessing'
+  })
+
+
+
+  // console.log(mage.createdAt); // Today's date
+  // console.log(archer.dimensions); // { length: 1, width: 2, height: 4 }
+  // console.log(swordsman.healthPoints); // 15
+  // console.log(mage.name); // Bruce
+  // console.log(swordsman.team); // The Round Table
+  // console.log(mage.weapons); // Staff of Shamalama
+  // console.log(archer.language); // Elvish
+  // console.log(archer.greet()); // Lilith offers a greeting in Elvish.
+  // console.log(mage.takeDamage()); // Bruce took damage.
+  // console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
 
   // Stretch task: 
   // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
